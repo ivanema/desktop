@@ -1,0 +1,206 @@
+importar  java.awt. * ;
+importación  java.awt.event.ActionEvent ;
+importación  java.awt.event.ActionListener ;
+importación  java.awt.event.MouseEvent ;
+importación  java.awt.event.MouseListener ;
+
+importación  javax.swing.ImageIcon ;
+importación  javax.swing.JButton ;
+importación  javax.swing.JFrame ;
+importación  javax.swing.JOptionPane ;
+importación  javax.swing.JPanel ;
+
+
+público  de clase  Akinator <E se extiende  Comparable < E >> extiende JFrame  implementa  ActionListener {
+	
+
+	privada  DESTREE < E > árbol;
+	privadas  NodoDes < E > nodo;
+	privada  booleano ganar;
+	privada  imagen genio, dialogo, fondo;
+	privada  JButton si, no, salir;
+	
+
+	pública  Akinator ( DESTREE < E >  raíz ) { // SE Tiene Que change La Direccin del archivo Para Que marina local
+		súper ();
+		esta . setTree (raíz);
+		esta . getTree () . lector ( " src / memoria.txt " );
+		esta . nodo = raíz . getRoot ();
+		esta . ganar =  false ;
+		// /// ----- ------ Gráfico ////
+		esta . setFocusable ( verdadero );
+		esta . setVisible ( verdadero );
+		esta . setSize ( 700 , 700 );
+		esta . setResizable ( verdadero );
+		esta . setDefaultCloseOperation ( EXIT_ON_CLOSE );
+		esta . getContentPane () . setLayout ( nulo );
+		// /// ----- ------ Imagenes ////
+		esta . genio =  nuevo  ImageIcon ( " src / genie.png " ) . obtener la imagen();
+		esta . fondo =  nuevo  ImageIcon ( " src / cool.jpg " ) . obtener la imagen();
+		esta . dialogo =  nuevo  ImageIcon ( " src / talk.png " ) . obtener la imagen();
+		// /// ------- -------- ///// Botones
+		esta . si =  nuevo  JButton ( " SI " );
+		esta . no =  nuevo  JButton ( " NO " );
+		esta . salir =  nuevo  JButton ( " SALIR " );
+		esta . Si . setBounds ( 0 , este . getHeight () -  82 , 240 , 60 );
+		esta . ninguna . setBounds ( 240 , este . getHeight () -  82 , 240 , 60 );
+		esta . salir . setBounds ( 480 , este . getHeight () -  82 , 220 , 60 );
+		esta . añadir ( este . no);
+		esta . añadir ( este . SI);
+		esta . añadir ( este . salir);
+		esta . ninguna . addActionListener ( este );
+		esta . Si . addActionListener ( este );
+		esta . salir . addActionListener ( este );
+		esta . ninguna . setVisible ( verdadero );
+		esta . Si . setVisible ( verdadero );
+		esta . salir . setVisible ( verdadero );
+
+	}
+	
+	pública  booleano  isGanar () {
+		volver ganar;
+	}
+
+
+	pública  vacío  setGanar ( booleano  ganar ) {
+		esta . ganar = ganar;
+	}
+
+
+
+	pública  DESTREE < E >  getRoot () {
+		volver getTree ();
+	}
+
+	pública  vacío  setRoot ( DESTREE < E >  raíz ) {
+		esta . setTree (raíz);
+	}
+
+
+	públicas  NodoDes < E >  getNode () {
+		volver nodo;
+	}
+
+
+	pública  vacío  setNode ( NodoDes < E >  nodo ) {
+		esta . nodo = nodo;
+	}
+
+
+	// ////// ------------- Recorre el arbol ------------------------ // //////////
+	pública  Cadena  Recorrer ( booleano  dir ) {
+		si ( este . nodo . getNo () ==  nula  &&  este . nodo . getYes () ==  nula ) {    // Verifica si ha Llegado un Una hoja
+			Sistema . a cabo . println ( " Entre una raiz nodo " );
+			si (dir ==  false ) {
+				esta . getTree () . addQuestion ( nueva  JOptionPane () . showInputDialog ( " No se! :( cual es el animal? " ), nueva  JOptionPane () . showInputDialog ( " Cual seria la PREGUNTA de Si / No Que tendria Que Hacer? " ), este . nodo , 2 );
+				esta . ganar =  verdadero ;
+				volver  nula ;
+			}
+			otra cosa {
+				nueva  JOptionPane () . showMessageDialog ( nula , " Adivine :)! " );
+				esta . ganar =  verdadero ;
+				volver  " Adivine :)! " ;
+			}
+		}
+		otra cosa {
+			si (dir ==  verdadera ) { // Si el ususario menciono Que Si
+				si ( este . nodo . getYes () ==  nula  &&  este . nodo . getNo () ! =  nulo ) { // Si ha Llegado una ONU nodo Que Tiene Un hijo izquierdo
+					Sistema . a cabo . println ( " No se :( cual es el de los animales!? " );
+					esta . getTree () . addQuestion ( nueva  JOptionPane () . showInputDialog ( " No se! :( cual es el animal? " ), nueva  JOptionPane () . showInputDialog ( " Cual seria la PREGUNTA de Si / No Que tendria Que Hacer? " ), este . nodo , 1 );
+					esta . ganar =  verdadero ;
+					devolver  este . nodo . getQuestion ();
+				}
+				otra cosa {
+					esta . nodo =  esta . nodo . getYes ();
+				}
+			}
+			otra cosa {
+				si ( este . nodo . getNo () ==  nula  &&  este . nodo . getYes () ! =  nulo ) { // Si ha Llegado una ONU nodo Que Tiene Un hijo derecho
+					Sistema . a cabo . println ( " No se me :( PUEDES Decir La Respuesta? " );
+					esta . getTree () . addQuestion ( nueva  JOptionPane () . showInputDialog ( " No se! :( cual es el animal? " ), nueva  JOptionPane () . showInputDialog ( " Cual seria la PREGUNTA de Si / No Que tendria Que Hacer? " ), este . nodo , 0 );
+					esta . ganar =  verdadero ;
+					devolver  este . nodo . getQuestion ();
+				}
+				otra cosa {
+					esta . nodo =  esta . nodo . getNo ();
+				}
+			}
+		}
+
+		devolver  este . nodo . getQuestion ();
+	}
+	
+	pública  vacío  pintura ( Gráficos  g ) {
+		súper . pintar (g);
+		esta . setBackground ( en color . DARK_GRAY );
+		Fuentes fuente =  nueva  fuente ( " Monospaced " , de fuentes . BOLD , 15 );
+		g . setFont (fuente);
+		g . setColor ( en color . AZUL );
+		g . drawImage ( este . fondo, 0 , 0 , este . getWidth (), este . getHeight () - 60 , nula );
+		g . drawImage ( este . genio, 250 , 130 , 400 , 500 , nula );
+		g . drawImage ( este . dialogo, 120 , 20 , 300 , 300 , nula );	
+		esta . DrawMessage (g);
+	}
+	
+	pública  vacío  DrawMessage ( Gráficos  g ) {
+		int y =  90 ;
+		int k =  20 ;
+		int w =  0 ;
+		int z =  esta . nodo . getQuestion () . longitud();
+		para ( int i =  0 ; i <  este . nodo . getQuestion () . length (); i ++ ) {
+				g . cordón ( este . nodo . getQuestion () . subcadena (w, i), 160 , y);
+				si (i > = k) {
+					y + =  14 ;
+					k + =  20 ;
+					w + =  20 ;
+				}
+		}
+	}
+
+	/ * *
+	 * @param args
+	 * /
+	públicas  estáticas  vacíos  principales ( cadena [] args ) {
+		Akinator < cadena > Akinator =  nuevo  Akinator < cadena > ( nuevo  DESTREE < cadena > ());
+		boolean bandera =  false ;
+		mientras que (bandera ==  false ) {
+			Sistema . a cabo . println ( " un " );
+			si (Akinator . Ganar ==  verdadera ) {
+				Akinator . árbol . salvar();
+				Sistema . a cabo . println ( " b " );
+				si ( nueva  JOptionPane ( " DESEAS volver a jugar? " ) . showConfirmDialog ( nula , " DeSEA volver a jugar? " ) ==  0 ) {
+					Akinator =  nuevo  Akinator < cadena > ( nuevo  DESTREE < cadena > ());	
+				}
+				otra cosa {
+					bandera =  verdadero ;
+				}
+			}
+		}
+	}
+
+
+	pública  DESTREE < E >  getTree () {
+		volver árbol;
+	}
+
+
+	pública  vacío  setTree ( DESTREE < E >  árbol ) {
+		esta . árbol = árbol;
+	}
+
+	@Anular
+	pública  vacío  actionPerformed ( ActionEvent  e ) {
+		si (e . getSource () ==  esto . no) {
+			esta . Recorrer ( falso );
+			esta . repintar ();
+		}
+		otra cosa  si (e . getSource () ==  esto . SI) {
+			esta . Recorrer ( verdadero );
+			esta . repintar ();
+		}
+		otra cosa  si (e . getSource () ==  esto . salir) {
+			esta . ganar =  verdadero ;
+			Sistema . de salida ( 0 );
+		}
+	}
+}
